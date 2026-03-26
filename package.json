@@ -19,6 +19,8 @@
     "build-graph:dry": "bun src/graph/build.ts --dry-run",
     "generate-vault": "bun src/vault/index.ts",
     "generate-vault:verbose": "bun src/vault/index.ts --verbose",
+    "resolve:stats": "bun src/resolve/index.ts --stats",
+    "resolve:review": "bun src/resolve/review.ts",
     "test": "bun test"
   },
   "devDependencies": {

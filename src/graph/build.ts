@@ -12,7 +12,7 @@ import { readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { getConnection, query, closeDb } from "./db.ts";
 import { initSchema } from "./schema.ts";
-import { loadExtraction, type LoadResult } from "./loader.ts";
+import { loadExtraction, initResolver, type LoadResult } from "./loader.ts";
 import type { CachedExtraction } from "../extract/schema.ts";
 
 const ROOT = import.meta.dir.replace("/src/graph", "");
@@ -107,6 +107,10 @@ async function main() {
     const conn = getConnection();
     conn.querySync(cypher);
   });
+
+  // Initialize entity resolver (loads resolution maps from data/resolutions/)
+  await initResolver();
+  console.log("[build] Entity resolver initialized");
 
   // Load extractions
   const toLoad = files.slice(0, limit);

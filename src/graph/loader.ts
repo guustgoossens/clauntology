@@ -18,6 +18,7 @@
 import { exec, query } from "./db.ts";
 import { flattenTaxonomy } from "./taxonomy.ts";
 import { depthToScore } from "../extract/schema.ts";
+import { loadResolutions, resolveSync } from "../resolve/resolver.ts";
 import type {
   CachedExtraction,
   ConversationExtraction,
@@ -134,9 +135,10 @@ interface ConversationMeta {
 
 export function insertConversation(
   meta: ConversationMeta,
-  extraction: ConversationExtraction
+  extraction: ConversationExtraction,
+  convId?: string
 ): void {
-  const topicNames = extraction.topics.map((t) => t.name).slice(0, 10);
+  const topicNames = extraction.topics.map((t) => resolveSync("topics", t.name, undefined, convId)).slice(0, 10);
   const topicArray = topicNames.map((t) => `'${esc(t)}'`).join(", ");
   const date = meta.created_at?.split("T")[0] ?? "";
 
@@ -161,13 +163,14 @@ export function insertTopics(
   convDate: string
 ): void {
   for (const topic of topics) {
-    const id = slugify("topic", topic.name);
+    const resolvedName = resolveSync("topics", topic.name, undefined, convId);
+    const id = slugify("topic", resolvedName);
     const depth = depthToScore(topic.depth);
 
     // Upsert topic node
     safeExec(
       `MERGE (t:Topic {id: '${esc(id)}'})
-       SET t.name = '${esc(topic.name)}',
+       SET t.name = '${esc(resolvedName)}',
            t.domain = '${esc(topic.domain)}',
            t.description = '${esc(topic.description)}',
            t.depth = CASE WHEN t.depth < ${depth} THEN ${depth} ELSE t.depth END,
@@ -264,13 +267,14 @@ export function insertProjects(
   convDate: string
 ): void {
   for (const project of projects) {
-    const id = slugify("project", project.name);
+    const resolvedName = resolveSync("projects", project.name, undefined, convId);
+    const id = slugify("project", resolvedName);
 
     // Upsert project node
     const techArray = (project.tech_stack ?? []).map((t) => `'${esc(t)}'`).join(", ");
     safeExec(
       `MERGE (pr:Project {id: '${esc(id)}'})
-       SET pr.name = '${esc(project.name)}',
+       SET pr.name = '${esc(resolvedName)}',
            pr.description = '${esc(project.description)}',
            pr.status = '${esc(project.status)}',
            pr.tech_stack = [${techArray}],
@@ -310,11 +314,12 @@ export function insertPeople(
   convDate: string
 ): void {
   for (const person of people) {
-    const id = slugify("person", person.name);
+    const resolvedName = resolveSync("people", person.name, undefined, convId);
+    const id = slugify("person", resolvedName);
 
     safeExec(
       `MERGE (p:Person {id: '${esc(id)}'})
-       SET p.name = '${esc(person.name)}',
+       SET p.name = '${esc(resolvedName)}',
            p.relationship = '${esc(person.relationship)}',
            p.context = '${esc((person.context ?? "").slice(0, 500))}',
            p.mention_count = p.mention_count + 1,
@@ -401,6 +406,18 @@ export function linkConversationToEra(convId: string, convDate: string): void {
 }
 
 // ============================================
+// Resolver initialization
+// ============================================
+
+/**
+ * Initialize the entity resolver. Must be called (and awaited) before
+ * loadExtraction() so that resolveSync() works.
+ */
+export async function initResolver(): Promise<void> {
+  await loadResolutions();
+}
+
+// ============================================
 // Main loader function
 // ============================================
 
@@ -423,7 +440,7 @@ export function loadExtraction(
   const extraction = cached.extraction;
 
   try {
-    insertConversation(convMeta, extraction);
+    insertConversation(convMeta, extraction, convId);
     insertTopics(extraction.topics, convId, convDate);
     insertSkills(extraction.skills, convId, convDate);
     insertProjects(extraction.projects, convId, convDate);

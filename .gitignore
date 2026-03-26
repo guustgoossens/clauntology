@@ -37,12 +37,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .cursor/
 
 # Personal data — never commit
-data/web-exports/
-data/normalized/
-data/extractions/
+data/
+!data/examples/
 db/
 /vault/
 manifest.json
-
-# Keep example data
-!data/examples/
