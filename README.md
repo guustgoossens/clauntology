@@ -1,4 +1,4 @@
-# Ontolo
+# Clauntology
 
 **A living personal knowledge graph built from your Claude conversations.**
 
