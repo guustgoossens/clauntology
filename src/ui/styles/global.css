@@ -1,0 +1,326 @@
+:root {
+  /* Backgrounds */
+  --bg: #0a0a0f;
+  --bg-panel: #0e0e14;
+  --bg-card: #111118;
+
+  /* Text */
+  --text: #e8cea6;
+  --text-dim: #cd8218;
+  --text-bright: #ffeab8;
+  --text-muted: #5a5a6a;
+
+  /* Borders */
+  --border: #1a1a22;
+  --border-bright: #cd6d13;
+
+  /* Accent */
+  --accent: #d07b1b;
+  --accent-bright: #d4a843;
+
+  /* Domain colors */
+  --domain-cognitive: #4ecdc4;
+  --domain-technical: #45b7d1;
+  --domain-business: #f7dc6f;
+  --domain-social: #e74c3c;
+  --domain-creative: #bb8fce;
+  --domain-physical: #82e0aa;
+  --domain-self: #f0b27a;
+  --domain-knowledge: #85c1e9;
+
+  /* Typography */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: -apple-system, system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+/* ============================================
+   Top bar
+   ============================================ */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  gap: 24px;
+}
+
+.top-bar .title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stats-bar span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ============================================
+   Graph container
+   ============================================ */
+.graph-container {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.graph-container canvas {
+  display: block;
+}
+
+/* ============================================
+   Detail panel
+   ============================================ */
+.detail-panel {
+  position: fixed;
+  top: 48px;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  background: rgba(14, 14, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid var(--border);
+  z-index: 90;
+  padding: 24px;
+  overflow-y: auto;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.detail-panel .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  transition: all 0.15s;
+}
+
+.detail-panel .close-btn:hover {
+  border-color: var(--border-bright);
+  color: var(--text);
+}
+
+.detail-panel .skill-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-bright);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+/* Domain badge */
+.domain-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border: 1px solid;
+  padding: 3px 8px;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+}
+
+/* Depth section */
+.depth-section {
+  margin-bottom: 24px;
+}
+
+.depth-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.depth-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  margin-bottom: 6px;
+}
+
+.depth-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.4s ease-out;
+}
+
+.depth-value {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Evidence section */
+.evidence-section {
+  margin-top: 24px;
+}
+
+.section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.evidence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evidence-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+
+.evidence-title {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.evidence-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+button {
+  border-radius: 0;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+button:hover {
+  border-color: var(--border-bright);
+}
+
+/* Node type badge */
+.node-type-badge {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* Undiscovered label */
+.undiscovered-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 16px;
+  padding: 8px;
+  border: 1px dashed var(--border);
+}
+
+/* Evidence count */
+.evidence-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+/* Evidence depth badge */
+.evidence-depth {
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 24px;
+  letter-spacing: 0.05em;
+}
+
+/* Key hints */
+.key-hints {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+
+.key-hints span {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.key-hints kbd {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 1px 4px;
+  margin-right: 4px;
+}
