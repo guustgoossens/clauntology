@@ -1,0 +1,41 @@
+{
+  "name": "ontolo_gg",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "ingest": "bun src/ingest/index.ts",
+    "ingest:web": "bun src/ingest/index.ts --web-only",
+    "ingest:code": "bun src/ingest/index.ts --code-only",
+    "ingest:force": "bun src/ingest/index.ts --force",
+    "init-graph": "bun src/graph/init.ts",
+    "init-graph:reset": "bun src/graph/init.ts --reset",
+    "extract": "bun src/extract/index.ts",
+    "extract:next": "bun src/extract/next-job.ts",
+    "extract:stats": "bun src/extract/next-job.ts --stats",
+    "extract:loop": "bun src/extract/extract-loop.ts",
+    "build-graph": "bun src/graph/build.ts",
+    "build-graph:reset": "bun src/graph/init.ts --reset && bun src/graph/build.ts",
+    "build-graph:dry": "bun src/graph/build.ts --dry-run",
+    "generate-vault": "bun src/vault/index.ts",
+    "generate-vault:verbose": "bun src/vault/index.ts --verbose",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "kuzu": "^0.11.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "trustedDependencies": [
+    "kuzu"
+  ]
+}
