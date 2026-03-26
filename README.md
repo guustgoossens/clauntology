@@ -121,8 +121,8 @@ Based on the Renaissance ideal of the universal person, the taxonomy provides a 
 ## Setup
 
 ```bash
-git clone https://github.com/your-username/ontolo.git
-cd ontolo
+git clone https://github.com/guustgoossens/clauntology.git
+cd clauntology
 bun install
 cp .env.example .env  # Add your ANTHROPIC_API_KEY
 ```
