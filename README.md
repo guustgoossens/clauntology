@@ -2,7 +2,7 @@
 
 **A living personal knowledge graph built from your Claude conversations.**
 
-Ontolo indexes every Claude conversation you have — web exports and CLI sessions alike — and maps them onto a structured taxonomy of ~200 skills across 8 domains. It extracts skills, topics, projects, people, beliefs, questions, thinking patterns, and growth signals from each conversation, loads them into an embedded graph database, and generates a fully cross-referenced Obsidian vault with thousands of interconnected pages.
+Ontolo indexes every Claude conversation you have, both web chat exports and Claude Code sessions, and maps them onto a structured taxonomy of ~200 skills across 8 domains. It extracts skills, topics, projects, people, beliefs, questions, thinking patterns, and growth signals from each conversation, loads them into an embedded graph database, and generates a fully cross-referenced Obsidian vault with thousands of interconnected pages.
 
 The result is a navigable map of everything you know, everything you're learning, and how your thinking evolves over time.
 
