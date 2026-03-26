@@ -41,7 +41,7 @@ data/web-exports/
 data/normalized/
 data/extractions/
 db/
-vault/
+/vault/
 manifest.json
 
 # Keep example data
